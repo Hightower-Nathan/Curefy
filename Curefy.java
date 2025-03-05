@@ -14,35 +14,33 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-//import java.util.concurrent.Executors; for thread manager since too many threads can downgrade preformance
-
-
 //Begin Class Curefy
 public class Curefy {
         
 //Begin Main Method
-public static void main(String[] args) { //Use multithreading like this assign each task to a thread 
-   /* int n = 8;
-    for(int i = 0; i < n; i++){
-        MyRunnable myrun = new MyRunnable() {};
-        Thread thread = new Thread(myrun);
-        thread.start();
-    }*/
-  
+public static void main(String[] args) { 
+
+   //CureSpec/DataFile paths
    String excelFilePath = "C:/Program Files/NetBeans-12.6/WorkSpace/Cure_Specs.xlsx";
    String dataFilePath = "C:/Program Files/NetBeans-12.6/WorkSpace/Test_Data_Curefy.xlsx";
    int columnIndex = 1;
-   
+
+   //Create object
    ExcelHandler excelhandler = new ExcelHandler();
+   //ColumnValues to returned from readColumn method
    List<Double> columnValues = excelhandler.readColumn(excelFilePath, columnIndex);
+   //Give columnValues to the curespec to initialize
    CureSpec curespec = new CureSpec(columnValues);
+   //Give ex1 the curespec
    ExcelHandler ex1 = new ExcelHandler(curespec); 
   
-   
+   //Find the row index (where to begin)
    int returnedRowIndex = excelhandler.findRowIndex(dataFilePath);
+   //Assign TC names
    List<String> tcNames = excelhandler.readTcNames(dataFilePath, returnedRowIndex);
+   //Find column index (where to look) 
    List<Integer> returnedColumnIndex = excelhandler.findColumnIndex(dataFilePath, returnedRowIndex);
-   
+   //Perform first review 
    excelhandler.findFirstHold(curespec, returnedRowIndex, returnedColumnIndex, dataFilePath);
    
    //int firstHoldIndex = excelhandler.findFirstHold(returnedRowIndex, returnedColumnIndex, dataFilePath);
