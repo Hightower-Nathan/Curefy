@@ -20,14 +20,8 @@ public class CureSpec {
     protected double bHoldTime, dHoldTime, fHoldTime;
     protected double vacuumDecay;
     protected double coolTemp; 
-    protected String tcName; //May need to be an arraylist<> 
+    protected String tcName; 
     protected double delta;
-    
-    //In the furture use the constructor to initilize variables.
-    //This will allow the appropriate spec to be created by the number of 
-    //Args that are passed to it. Actually, since we are pulling the data from
-    //Excel and not providing during Obj creation we may have to go about this
-    //Differently, maybe by comparing the size of the elements in the list? 
     
     public CureSpec(){};//This is for the ExcelHandler to extend. I need to work on getting everything organized 
     
@@ -47,10 +41,7 @@ public class CureSpec {
     //This is a test to set all required values at the same time 
     
     /**
-     * Method: Sets all the values from the DB at once...
-     * Has to be a better way of doing this though...
-     * Look into!!!!!!!!!!!
-     * I do not like hard coding values.
+     * Method: Sets all the values from the DB at once.
      * @param list 
      */
     public void setCureValues(List<Double> list){
@@ -93,11 +84,7 @@ public class CureSpec {
         System.out.println(delta);
     }
 
-    ////////////////////////////////////////////////////////////////////////////
-    //May not need get methods since the verify classes will implement CureSpec 
-    //all variables should be able to be accessed if not private then protected
-    ////////////////////////////////////////////////////////////////////////////
-    
+
     /**
      * Method: Returns the value stored in vacuum
      * @return 
