@@ -20,7 +20,7 @@ import java.io.File;
 //Begin Subclass ExcelHandler
 public class ExcelHandler extends CureSpec{
     
-    //Use method chainning for all of these 
+    
     public ExcelHandler(){};
     public ExcelHandler(CureSpec curespec){};
     
@@ -30,7 +30,7 @@ public class ExcelHandler extends CureSpec{
     
     
     
-    //This find the correct rowIndex 
+    //Find the correct rowIndex 
     public int findRowIndex (String dataFilePath){
         int rowIndex = 0;
         try (FileInputStream fis2 = new FileInputStream(dataFilePath);
@@ -47,10 +47,11 @@ public class ExcelHandler extends CureSpec{
         }catch (IOException e){
                        e.printStackTrace();
                        }
-        //System.out.println(rowIndex);
+        
         return rowIndex; 
     };
-    
+
+    //Find the column index
     public List<Integer> findColumnIndex (String dataFilePath, int rowIndex){
         int columnIndexx = 0;
         List<Integer> columnIndex = new ArrayList<>();
@@ -59,7 +60,6 @@ public class ExcelHandler extends CureSpec{
                    Sheet sheet = workbook.getSheetAt(0);
                    Row row = sheet.getRow(rowIndex);
                    if (row != null){
-                   //for(Row row: sheet){
                        for(Cell cell: row){
                            if(cell.getCellType() == CellType.STRING && 
                                    cell.getStringCellValue().contains("PTC")){
@@ -72,17 +72,13 @@ public class ExcelHandler extends CureSpec{
         }catch (IOException e){
                        e.printStackTrace();
                        }
-        //for(int item: columnIndex){
-         //   System.out.println(item);
-        //}
        
         return columnIndex; 
     };
    
-    //Works and locates the correct row!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    //Locate and store TC names 
     public List<String> readTcNames (String dataFilePath, int rowIndex){
-        
-       // List<String> tcNames = new ArrayList<>();
+
         try (FileInputStream fis2 = new FileInputStream(dataFilePath);
                Workbook workbook = new XSSFWorkbook(fis2)){
                    Sheet sheet = workbook.getSheetAt(0);
@@ -100,7 +96,7 @@ public class ExcelHandler extends CureSpec{
         }catch (IOException e){
                        e.printStackTrace();
                        }
-       // tcNames = tcNames;
+   
         return tcNames; 
     };
     
@@ -111,14 +107,14 @@ public class ExcelHandler extends CureSpec{
      * @return 
      */
     public List<Double> readColumn(String excelFilePath, int columnIndex){
-       List<Double> columnData = new ArrayList<>();//<String>
+       List<Double> columnData = new ArrayList<>();
        try (FileInputStream fis = new FileInputStream(excelFilePath);
                Workbook workbook = new XSSFWorkbook(fis)){
                    Sheet sheet = workbook.getSheetAt(0);
                    for(Row row: sheet){
                        Cell cell = row.getCell(columnIndex);
                        if(cell != null){
-                           columnData.add(cell.getNumericCellValue());//cell.toString()
+                           columnData.add(cell.getNumericCellValue());
                        }
                    }
                } catch (IOException e){
@@ -138,7 +134,7 @@ public class ExcelHandler extends CureSpec{
     //This can be established by using two methods if planned correctly
     //instead of six. Do this at some point for now, move on. 
     
-    
+    //Find where all TC's within column/row indexs meet the minimum temp requirement and set that location
    public void findFirstHold(CureSpec curespec, int rowIndex, List<Integer> columnIndex, String dataFilePath) {
         int startFHoldIndex = 0;
         int startRowInd = rowIndex + 2;
@@ -163,14 +159,14 @@ public class ExcelHandler extends CureSpec{
                     }
                 }
                 startRowInd++;
-            } while (condition <= 114.9);// outter for loop 
+            } while (condition <= 114.9);
         } catch (IOException e) {
             e.printStackTrace();
         }
             findendFirstHold(curespec, dataFilePath, startFHoldIndex, columnIndex, rowIndex);
         
     };
-    
+   //Find where the first hold ends and store that value 
    public void findendFirstHold(CureSpec curespec,String datafilePath, int startFirstHoldIndex, List<Integer> columnIndex, int rowIndex ){
     int endFHoldIndex = 0; 
     double bHoldTimeMinutes = curespec.getbHoldTime(); 
@@ -183,7 +179,7 @@ public class ExcelHandler extends CureSpec{
                    do{
                        Row row = sheet.getRow(startFirstHoldIndex);
                        
-                       //Just looks at the column with the number of minutes 
+                       
                        for(int item : columnIndex){
                            Cell cell = row.getCell(item);           
                        if(cell != null){
@@ -213,17 +209,15 @@ public class ExcelHandler extends CureSpec{
      
      //Commenting out just to test the first hold reqs 
      //findSecondHold(rowIndex, columnIndex, datafilePath, curespec);
- 
-    
+
     };//End method 
      
-   //WIP compare the temps for compliance during the first hold
-   //Fucking works..Hell yeah brother 
+   //Compare the temps for compliance during the first hold 
    public void complianceFirstHold(CureSpec curespec, int rowIndex, List<Integer> columnIndex, String dataFilePath, int startFHoldIndex,
             int endFirstHoldIndex) {
 
-        List<Double> lowTcs = new ArrayList<>(); // To store tcs that did not make temp
-        List<Double> highTcs = new ArrayList<>(); // To store tcs that exceeded max temp
+        List<Double> lowTcs = new ArrayList<>(); 
+        List<Double> highTcs = new ArrayList<>(); 
         List<String> failedLowTcNames = new ArrayList<>();
         List<String> failedHighTcNames = new ArrayList<>(); 
         int dashNumber = 0;
@@ -234,7 +228,7 @@ public class ExcelHandler extends CureSpec{
             System.out.println(startFHoldIndex);
             System.out.println(endFirstHoldIndex);
             
-            //System.out.println(rowIndex);
+            
             //Loop through the columns between the start/end indexs and 
             //compare the temps to the spec requirements
             do {
@@ -248,6 +242,7 @@ public class ExcelHandler extends CureSpec{
                         } else {
                             dashNumber++;
                         }
+                        //Nums will be changed to the appropriate variables within the curespec
                         if (cell.getNumericCellValue() <= 114.9) {
                             lowTcs.add(cell.getNumericCellValue());
                             failedLowTcNames.add(tcNames.get(dashNumber - 1)); 
@@ -275,7 +270,7 @@ public class ExcelHandler extends CureSpec{
    
    
    
-   
+   //Create a new sheet in excel and write what is bad to it. 
    public void writeToReport (List<Double> lowTcs, List<Double> highTcs, List<String> failedLowTcNames, List<String> failedHighTcNames, String dataFilePath){
    
     
@@ -309,13 +304,14 @@ public class ExcelHandler extends CureSpec{
                 workbook.write(fos);
                 workbook.close();
             }
-       Desktop.getDesktop().open(new File(dataFilePath));//View the report 
+       //View the report 
+       Desktop.getDesktop().open(new File(dataFilePath));
        
    }catch (IOException e) {
             e.printStackTrace();
         }
   
-   //Desktop.getDesktop().open(new File(dataFilePath));
+  
    }
    
    
