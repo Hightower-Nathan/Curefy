@@ -4,7 +4,7 @@ package CurefyPkg;
 * @Project Name: Curefy
 * @Date: Feb 4, 2025
 * @Subclass Curespec Description: This will handle establishing cure spec's
-*/
+*/ 
 //Imports
 import java.util.List;
 import java.util.ArrayList;
@@ -20,8 +20,16 @@ public class CureSpec {
     protected double bHoldTime, dHoldTime, fHoldTime;
     protected double vacuumDecay;
     protected double coolTemp; 
-    protected String tcName; 
+    protected String tcName; //May need to be an arraylist<> 
     protected double delta;
+    protected double lessTemp = 0.1;
+    protected double temp9002 = 360.1;
+    
+    //In the furture use the constructor to initilize variables.
+    //This will allow the appropriate spec to be created by the number of 
+    //Args that are passed to it. Actually, since we are pulling the data from
+    //Excel and not providing during Obj creation we may have to go about this
+    //Differently, maybe by comparing the size of the elements in the list? 
     
     public CureSpec(){};//This is for the ExcelHandler to extend. I need to work on getting everything organized 
     
@@ -41,7 +49,10 @@ public class CureSpec {
     //This is a test to set all required values at the same time 
     
     /**
-     * Method: Sets all the values from the DB at once.
+     * Method: Sets all the values from the DB at once...
+     * Has to be a better way of doing this though...
+     * Look into!!!!!!!!!!!
+     * I do not like hard coding values.
      * @param list 
      */
     public void setCureValues(List<Double> list){
@@ -84,7 +95,21 @@ public class CureSpec {
         System.out.println(delta);
     }
 
-
+    ////////////////////////////////////////////////////////////////////////////
+    //May not need get methods since the verify classes will implement CureSpec 
+    //all variables should be able to be accessed if not private then protected
+    ////////////////////////////////////////////////////////////////////////////
+    
+    
+    public double getTemp9002(){
+        return temp9002;
+    }
+    
+    
+    public double getLessTemp(){
+        return lessTemp;
+    }
+    
     /**
      * Method: Returns the value stored in vacuum
      * @return 

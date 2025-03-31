@@ -8,7 +8,7 @@ package CurefyPkg;
 * and interactions 
 */
 //Imports
-
+ 
 
 //Begin Subclass UserInterface
 public class UserInterface {
