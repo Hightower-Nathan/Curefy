@@ -5,6 +5,7 @@ package CurefyPkg;
 * @Date: Feb 4, 2025
 * @Subclass Curespec Description: This will handle establishing cure spec's
 */ 
+
 //Imports
 import java.util.List;
 import java.util.ArrayList;
@@ -27,10 +28,9 @@ public class CureSpec {
     
     //In the furture use the constructor to initilize variables.
     //This will allow the appropriate spec to be created by the number of 
-    //Args that are passed to it. Actually, since we are pulling the data from
-    //Excel and not providing during Obj creation we may have to go about this
-    //Differently, maybe by comparing the size of the elements in the list? 
+    //Args that are passed to it. 
     
+    //Constructors 
     public CureSpec(){};//This is for the ExcelHandler to extend. I need to work on getting everything organized 
     
     public CureSpec(List<Double> list){
@@ -100,15 +100,22 @@ public class CureSpec {
     //all variables should be able to be accessed if not private then protected
     ////////////////////////////////////////////////////////////////////////////
     
-    
+    /**
+     * Method: Returns the value stored in temp9002
+     * @return 
+     */
     public double getTemp9002(){
         return temp9002;
-    }
+    }// End method 
     
     
+    /**
+     * Method: Returns the value stored in lessTemp
+     * @return 
+     */
     public double getLessTemp(){
         return lessTemp;
-    }
+    }//End Method
     
     /**
      * Method: Returns the value stored in vacuum
